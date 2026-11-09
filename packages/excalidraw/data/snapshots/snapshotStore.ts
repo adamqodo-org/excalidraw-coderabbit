@@ -94,11 +94,7 @@ export const deleteSnapshot = (id: string): boolean => {
   if (remaining.length === snapshots.length) {
     return false;
   }
-  window.localStorage.setItem(
-    SNAPSHOT_STORAGE_KEY,
-    serializeSnapshots(remaining),
-  );
-  return true;
+  return write(remaining);
 };
 
 /** Drops the in-memory copy, e.g. after another tab changed storage. */

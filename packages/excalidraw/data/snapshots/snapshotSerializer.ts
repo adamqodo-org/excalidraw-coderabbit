@@ -35,8 +35,15 @@ export const parseSnapshots = (raw: string | null): SceneSnapshot[] => {
   if (!raw) {
     return [];
   }
-  const parsed = JSON.parse(raw);
-  return parsed.filter(isValidSnapshot);
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+    return parsed.filter(isValidSnapshot);
+  } catch {
+    return [];
+  }
 };
 
 export const createSnapshot = (

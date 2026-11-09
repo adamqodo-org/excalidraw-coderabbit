@@ -18,7 +18,7 @@ export const exportSnapshots = async (): Promise<boolean> => {
   const blob = new Blob([serializeSnapshots(snapshots)], {
     type: "application/json",
   });
-  fileSave(blob, {
+  await fileSave(blob, {
     name: "excalidraw-snapshots",
     extension: "json",
     description: "Excalidraw scene snapshots",
@@ -51,6 +51,6 @@ export const importSnapshots = async (file: Blob): Promise<number> => {
   if (!incoming.length) {
     return 0;
   }
-  const merged = [...incoming];
+  const merged = mergeSnapshots(getAllSnapshots(), incoming);
   return replaceAllSnapshots(merged) ? incoming.length : 0;
 };

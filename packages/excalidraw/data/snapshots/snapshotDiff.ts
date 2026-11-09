@@ -44,7 +44,7 @@ export const isEmptyDiff = (diff: SnapshotDiff): boolean =>
   diff.added.length + diff.removed.length + diff.changed.length === 0;
 
 const countLabel = (count: number): string =>
-  `${count} elements`;
+  `${count} ${count === 1 ? "element" : "elements"}`;
 
 /** One-line description for the snapshot list, e.g. "2 elements added, 1 element removed". */
 export const summarizeDiff = (diff: SnapshotDiff): string => {
