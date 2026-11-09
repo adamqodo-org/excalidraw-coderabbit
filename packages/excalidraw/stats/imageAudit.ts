@@ -39,7 +39,11 @@ export const auditImages = (
     if (!element.fileId) {
       continue;
     }
-    used.add(element.fileId);
+    if (files[element.fileId]) {
+      used.add(element.fileId);
+    } else {
+      missingFiles.push(element.id);
+    }
   }
   let totalBytes = 0;
   for (const fileId of used) {

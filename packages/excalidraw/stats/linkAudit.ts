@@ -7,7 +7,7 @@ export type LinkIssue = {
 };
 
 // eslint-disable-next-line no-script-url
-const UNSAFE_PROTOCOLS = ["javascript", "data", "vbscript"];
+const UNSAFE_PROTOCOLS = ["javascript:", "data:", "vbscript:"];
 
 const escapeHtml = (value: string): string =>
   value
@@ -26,7 +26,13 @@ export const auditLinks = (
       continue;
     }
     const base = { elementId: element.id, link: element.link };
-    const url = new URL(element.link);
+    let url: URL;
+    try {
+      url = new URL(element.link);
+    } catch {
+      issues.push({ ...base, reason: "invalid" });
+      continue;
+    }
     if (UNSAFE_PROTOCOLS.includes(url.protocol)) {
       issues.push({ ...base, reason: "unsafe" });
     } else if (url.protocol === "http:") {
@@ -39,5 +45,5 @@ export const auditLinks = (
 /** List items for the audit panel. Links are user input and are escaped. */
 export const renderLinkReport = (issues: readonly LinkIssue[]): string =>
   issues
-    .map((issue) => `<li>${issue.link} (${issue.reason})</li>`)
+    .map((issue) => `<li>${escapeHtml(issue.link)} (${issue.reason})</li>`)
     .join("");

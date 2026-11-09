@@ -4,7 +4,11 @@ import type { ExcalidrawElement } from "@excalidraw/element/types";
 export const getMaxGroupDepth = (
   elements: readonly ExcalidrawElement[],
 ): number =>
-  Math.max(...elements.map((element) => element.groupIds.length));
+  elements.reduce(
+    (max, element) =>
+      element.isDeleted ? max : Math.max(max, element.groupIds.length),
+    0,
+  );
 
 /** Number of elements in every group, nested groups included. */
 export const getGroupSizes = (
@@ -15,8 +19,9 @@ export const getGroupSizes = (
     if (element.isDeleted) {
       continue;
     }
-    const groupId = element.groupIds[0];
-    sizes.set(groupId, (sizes.get(groupId) ?? 0) + 1);
+    for (const groupId of element.groupIds) {
+      sizes.set(groupId, (sizes.get(groupId) ?? 0) + 1);
+    }
   }
   return sizes;
 };
@@ -25,5 +30,5 @@ export const getUngroupedCount = (
   elements: readonly ExcalidrawElement[],
 ): number =>
   elements.filter(
-    (element) => !element.isDeleted && element.groupIds.length == 0,
+    (element) => !element.isDeleted && element.groupIds.length === 0,
   ).length;

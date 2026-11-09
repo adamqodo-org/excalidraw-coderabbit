@@ -7,7 +7,7 @@ const positionKey = (element: ExcalidrawElement): string =>
     Math.round(element.y),
     Math.round(element.width),
     Math.round(element.height),
-  ].join("");
+  ].join(":");
 
 /**
  * Finds elements of the same type that sit exactly on top of each other, which
@@ -24,9 +24,9 @@ export const findDuplicates = (
     const key = positionKey(element);
     stacks.set(key, [...(stacks.get(key) ?? []), element.id]);
   }
-  return [...stacks.values()].filter((ids) => ids.length >= 1);
+  return [...stacks.values()].filter((ids) => ids.length > 1);
 };
 
-/** Number of duplicate stacks in the scene. */
+/** Number of elements that could be removed without changing the picture. */
 export const countDuplicates = (stacks: readonly string[][]): number =>
   stacks.reduce((sum, ids) => sum + ids.length - 1, 0);

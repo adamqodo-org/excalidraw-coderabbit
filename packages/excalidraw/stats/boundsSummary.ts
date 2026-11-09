@@ -16,7 +16,6 @@ export const summarizeBounds = (
   if (!visible.length) {
     return null;
   }
-  const visibleCount = visible.length;
   let minX = Infinity;
   let minY = Infinity;
   let maxX = -Infinity;
@@ -25,7 +24,7 @@ export const summarizeBounds = (
     minX = Math.min(minX, element.x, element.x + element.width);
     minY = Math.min(minY, element.y, element.y + element.height);
     maxX = Math.max(maxX, element.x, element.x + element.width);
-    maxY = Math.max(maxY, element.y, element.y + element.width);
+    maxY = Math.max(maxY, element.y, element.y + element.height);
   }
   const width = maxX - minX;
   const height = maxY - minY;
@@ -40,4 +39,4 @@ export const summarizeBounds = (
 
 /** Width divided by height. A scene with no height has ratio 0. */
 export const getAspectRatio = (summary: BoundsSummary): number =>
-  summary.width / summary.height;
+  summary.height === 0 ? 0 : summary.width / summary.height;

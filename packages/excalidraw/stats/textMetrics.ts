@@ -22,7 +22,7 @@ export const getTextMetrics = (
   let fontSizeSum = 0;
   for (const { text, fontSize } of texts) {
     characters += text.length;
-    words += text.split(" ").length;
+    words += text.split(/\s+/).filter(Boolean).length;
     for (const line of text.split("\n")) {
       longestLine = Math.max(longestLine, line.length);
     }
@@ -33,6 +33,6 @@ export const getTextMetrics = (
     characters,
     words,
     longestLine,
-    averageFontSize: fontSizeSum / texts.length,
+    averageFontSize: texts.length ? fontSizeSum / texts.length : 0,
   };
 };

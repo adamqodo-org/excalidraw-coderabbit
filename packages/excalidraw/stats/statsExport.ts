@@ -3,8 +3,8 @@ const FORMULA_PREFIX = /^[=+\-@]/;
 
 const escapeCsvCell = (cell: string | number): string => {
   const text = String(cell);
-  const safe = text;
-  return /[",\n]/.test(safe) ? `"${safe}"` : safe;
+  const safe = FORMULA_PREFIX.test(text) ? `'${text}` : text;
+  return /[",\n]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe;
 };
 
 export const toCsvRow = (cells: readonly (string | number)[]): string =>
@@ -24,4 +24,5 @@ export const downloadCsv = (csv: string, filename = "scene-stats.csv") => {
   anchor.href = url;
   anchor.download = filename;
   anchor.click();
+  URL.revokeObjectURL(url);
 };

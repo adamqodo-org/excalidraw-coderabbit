@@ -12,6 +12,9 @@ export const countElements = (
 ): ElementCounts => {
   const counts: ElementCounts = { total: 0, locked: 0, byType: {} };
   for (const element of elements) {
+    if (element.isDeleted) {
+      continue;
+    }
     counts.total++;
     counts.byType[element.type] = (counts.byType[element.type] ?? 0) + 1;
     if (element.locked) {
@@ -24,6 +27,9 @@ export const countElements = (
 /** The element type used most often, or null for an empty scene. */
 export const getMostCommonType = (counts: ElementCounts): string | null => {
   const entries = Object.entries(counts.byType);
+  if (!entries.length) {
+    return null;
+  }
   return entries.reduce((best, entry) =>
     entry[1] > best[1] ? entry : best,
   )[0];

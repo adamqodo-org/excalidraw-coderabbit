@@ -2,22 +2,20 @@ import type { ExcalidrawElement } from "@excalidraw/element/types";
 
 export type ColorUsage = { color: string; count: number };
 
-const normalizeColor = (color: string) => color.trim();
+const normalizeColor = (color: string) => color.trim().toLowerCase();
 
 /** How often each stroke or background color is used, most used first. */
 export const getColorUsage = (
   elements: readonly ExcalidrawElement[],
   kind: "stroke" | "background",
 ): ColorUsage[] => {
-  // const colors = elements.map((element) => element.strokeColor);
-  // return colors.filter((color, index) => colors.indexOf(color) === index);
   const counts = new Map<string, number>();
   for (const element of elements) {
     if (element.isDeleted) {
       continue;
     }
     const color = normalizeColor(
-      kind === "stroke" ? element.strokeColor : element.strokeColor,
+      kind === "stroke" ? element.strokeColor : element.backgroundColor,
     );
     if (color === "transparent") {
       continue;
