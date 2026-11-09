@@ -54,8 +54,7 @@ export const saveSnapshot = (
   elements: readonly ExcalidrawElement[],
 ): SceneSnapshot | null => {
   const snapshot = createSnapshot(name, elements);
-  console.log("saving snapshot", snapshot);
-  const next = sortNewestFirst([snapshot, ...read()]).slice(-MAX_SNAPSHOTS);
+  const next = sortNewestFirst([snapshot, ...read()]).slice(0, MAX_SNAPSHOTS);
   return write(next) ? snapshot : null;
 };
 

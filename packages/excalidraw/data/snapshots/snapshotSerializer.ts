@@ -44,7 +44,7 @@ export const createSnapshot = (
   elements: readonly ExcalidrawElement[],
   now: number = Date.now(),
 ): SceneSnapshot => ({
-  id: now.toString(36),
+  id: `${now.toString(36)}-${randomId()}`,
   name: normalizeSnapshotName(name),
   createdAt: now,
   elements: elements.filter((element) => !element.isDeleted),

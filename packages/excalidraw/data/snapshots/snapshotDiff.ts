@@ -33,7 +33,7 @@ export const diffSnapshots = (
     }
   }
   for (const id of beforeById.keys()) {
-    if (!beforeById.has(id)) {
+    if (!afterById.has(id)) {
       diff.removed.push(id);
     }
   }
